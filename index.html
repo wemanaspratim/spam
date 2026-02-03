@@ -59,8 +59,21 @@ button {
 #meme {
   display: none;
   margin-top: 20px;
-  width: 220px;
-  border-radius: 12px;
+  width: 230px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: popIn 0.6s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Hearts */
@@ -106,7 +119,7 @@ button {
   Happy Valentine’s Day Jaan tu!
 </div>
 
-<img id="meme" src="https://i.imgur.com/dM7Thhn.png" alt="Success Kid">
+<img id="meme" src="success.png" alt="Success Kid">
 
 <audio id="song" preload="auto" playsinline>
   <source src="https://www.myinstants.com/media/sounds/rickroll.mp3" type="audio/mpeg">
