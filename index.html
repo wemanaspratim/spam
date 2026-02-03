@@ -13,19 +13,13 @@ body {
   justify-content: center;
   align-items: center;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ffb3b3, #ffd6d6); /* Pastel Red */
+  background: linear-gradient(135deg, #ffb3b3, #ffd6d6);
   overflow: hidden;
   text-align: center;
 }
 
-h1 {
-  font-size: 3rem;
+h1, h2 {
   color: white;
-}
-
-h2 {
-  color: white;
-  margin-bottom: 40px;
 }
 
 .buttons {
@@ -56,14 +50,20 @@ button {
 }
 
 #message {
-  margin-top: 30px;
+  margin-top: 20px;
   font-size: 1.8rem;
   color: white;
   display: none;
-  z-index: 2;
 }
 
-/* Floating hearts */
+#meme {
+  display: none;
+  margin-top: 20px;
+  width: 220px;
+  border-radius: 12px;
+}
+
+/* Hearts */
 .heart {
   position: fixed;
   bottom: -20px;
@@ -93,8 +93,8 @@ button {
 
 <body>
 
-<h1>Hey Ken Doll ❤️</h1>
-<h2>Will you be my Valentine?</h2>
+<h1 id="title">Hey Ken Doll ❤️</h1>
+<h2 id="question">Will you be my Valentine?</h2>
 
 <div class="buttons">
   <button id="yes">Yes</button>
@@ -106,7 +106,9 @@ button {
   Happy Valentine’s Day Jaan tu!
 </div>
 
-<audio id="song" preload="auto">
+<img id="meme" src="https://i.imgur.com/dM7Thhn.png" alt="Success Kid">
+
+<audio id="song" preload="auto" playsinline>
   <source src="https://www.myinstants.com/media/sounds/rickroll.mp3" type="audio/mpeg">
 </audio>
 
@@ -115,7 +117,10 @@ button {
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
+const meme = document.getElementById("meme");
 const song = document.getElementById("song");
+const title = document.getElementById("title");
+const question = document.getElementById("question");
 
 /* Floating NO button */
 const noMove = setInterval(() => {
@@ -124,39 +129,44 @@ const noMove = setInterval(() => {
 
   noBtn.style.left = Math.random() * maxX + "px";
   noBtn.style.top = Math.random() * maxY + "px";
-
 }, 900);
 
 /* YES CLICK */
 yesBtn.addEventListener("click", () => {
 
-  message.style.display = "block";
+  /* Remove question + buttons */
+  title.style.display = "none";
+  question.style.display = "none";
+  yesBtn.style.display = "none";
 
-  /* Remove NO button */
   clearInterval(noMove);
   noBtn.style.display = "none";
 
+  /* Show message + meme */
+  message.style.display = "block";
+  meme.style.display = "block";
+
   launchHearts();
   launchConfetti();
-
   fadeInSong();
-
 });
 
-/* Smooth Fade In Music */
+/* Smooth Fade Music */
 function fadeInSong() {
   song.volume = 0;
-  song.play();
 
-  let volume = 0;
-  const fade = setInterval(() => {
-    if (volume < 1) {
-      volume += 0.05;
-      song.volume = volume;
-    } else {
-      clearInterval(fade);
-    }
-  }, 200);
+  song.play().then(() => {
+    let volume = 0;
+
+    const fade = setInterval(() => {
+      if (volume < 1) {
+        volume += 0.05;
+        song.volume = volume;
+      } else {
+        clearInterval(fade);
+      }
+    }, 200);
+  });
 }
 
 /* Hearts */
@@ -180,8 +190,8 @@ function launchConfetti() {
     confetti.style.left = Math.random() * 100 + "vw";
     confetti.style.backgroundColor =
       `hsl(${Math.random()*360},100%,70%)`;
-    document.body.appendChild(confetti);
 
+    document.body.appendChild(confetti);
     setTimeout(() => confetti.remove(), 4000);
   }
 }
