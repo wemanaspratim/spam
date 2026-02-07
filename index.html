@@ -13,7 +13,7 @@ text-align:center;
 overflow:hidden;
 }
 
-/* Main Screen */
+/* MAIN SCREEN */
 #main{
 margin-top:150px;
 }
@@ -30,7 +30,7 @@ margin:10px;
 #yes{background:#ff4d6d;color:white;}
 #no{background:#444;color:white;}
 
-/* Loading Screen */
+/* LOADING SCREEN */
 #loadingScreen{
 display:none;
 margin-top:150px;
@@ -49,6 +49,7 @@ width:0%;
 background:white;
 }
 
+/* FINAL MESSAGE */
 #meme{
 display:none;
 width:230px;
@@ -56,7 +57,7 @@ margin-top:20px;
 border-radius:12px;
 }
 
-/* Rick gif */
+/* RICK GIF */
 #rick{
 position:fixed;
 bottom:10px;
@@ -65,7 +66,7 @@ width:120px;
 display:none;
 }
 
-/* Hearts */
+/* HEARTS */
 .heart{
 position:fixed;
 bottom:-20px;
@@ -78,7 +79,7 @@ animation:floatUp 6s linear infinite;
 100%{transform:translateY(-110vh);opacity:0;}
 }
 
-/* Confetti */
+/* CONFETTI */
 .confetti{
 position:fixed;
 width:8px;
@@ -95,7 +96,7 @@ to{transform:translateY(110vh) rotate(360deg);}
 
 <body>
 
-<!-- MAIN QUESTION -->
+<!-- QUESTION PAGE -->
 <div id="main">
 <h1>Hey Ken Doll ❤️</h1>
 <h2>Will you be my Valentine?</h2>
@@ -103,10 +104,16 @@ to{transform:translateY(110vh) rotate(360deg);}
 <button id="no">No</button>
 </div>
 
-<!-- LOADING SCREEN -->
+<!-- LOADING PAGE -->
 <div id="loadingScreen">
+
 <h2>🔍 Checking Compatibility</h2>
-<img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" width="80"><br><br>
+
+<div id="scanner">
+<img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" width="80">
+</div>
+
+<br>
 
 <div id="bar">
 <div id="progress"></div>
@@ -120,14 +127,16 @@ Result: Permanently Stuck with Barbie 💘
 
 <div id="finalMessage" style="display:none;">
 <h2>I love you ❤️<br>Happy Valentine’s Day Jaan tu!</h2>
-<img id="IMG_0456.png" src="success.png">
-</div>
+<img id="meme" src="IMG_0456.png" alt="Success Kid">
+
 </div>
 
-<!-- Rick Astley GIF -->
+</div>
+
+<!-- RICK ASTLEY GIF -->
 <img id="rick" src="https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif">
 
-<audio id="song">
+<audio id="song" preload="auto" playsinline>
 <source src="https://www.myinstants.com/media/sounds/rickroll.mp3">
 </audio>
 
@@ -149,16 +158,15 @@ const meme=document.getElementById("meme");
 const song=document.getElementById("song");
 const rick=document.getElementById("rick");
 
-/* NO BUTTON BETRAYAL */
+/* NO BUTTON */
 noBtn.onclick=()=>{
 alert("Error 404: Wrong Choice Detected 😆");
-startLoading();
-}
+};
 
 /* YES BUTTON */
 yesBtn.onclick=startLoading;
 
-/* LOADING LOGIC */
+/* LOADING FUNCTION */
 function startLoading(){
 
 main.style.display="none";
@@ -167,13 +175,21 @@ loading.style.display="block";
 let count=0;
 
 const load=setInterval(()=>{
+
 count++;
 progress.style.width=count+"%";
 percent.innerText=count+"%";
 
 if(count>=100){
+
 clearInterval(load);
 
+/* HIDE LOADING ELEMENTS */
+document.getElementById("bar").style.display="none";
+document.getElementById("scanner").style.display="none";
+percent.style.display="none";
+
+/* SHOW FINAL RESULT */
 result.style.display="block";
 finalMessage.style.display="block";
 meme.style.display="block";
@@ -187,10 +203,9 @@ rick.style.display="block";
 }
 
 },40);
-
 }
 
-/* MUSIC FADE */
+/* MUSIC FADE IN */
 function fadeMusic(){
 song.volume=0;
 song.play();
