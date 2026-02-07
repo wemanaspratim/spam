@@ -107,7 +107,7 @@ to{transform:translateY(110vh) rotate(360deg);}
 <!-- LOADING PAGE -->
 <div id="loadingScreen">
 
-<h2>🔍 Checking Compatibility</h2>
+<h2 id="checkingText">🔍 Checking Compatibility</h2>
 
 <div id="scanner">
 <img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" width="80">
@@ -184,9 +184,10 @@ if(count>=100){
 
 clearInterval(load);
 
-/* HIDE LOADING ELEMENTS */
+/* HIDE ALL LOADING VISUALS */
 document.getElementById("bar").style.display="none";
 document.getElementById("scanner").style.display="none";
+document.getElementById("checkingText").style.display="none";
 percent.style.display="none";
 
 /* SHOW FINAL RESULT */
