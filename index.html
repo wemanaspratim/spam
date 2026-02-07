@@ -1,212 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Spam</title>
 
 <style>
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ffb3b3, #ffd6d6);
-  overflow: hidden;
-  text-align: center;
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(135deg,#ffb3b3,#ffd6d6);
+text-align:center;
+overflow:hidden;
 }
 
-h1, h2 {
-  color: white;
+/* Main Screen */
+#main{
+margin-top:150px;
 }
 
-.buttons {
-  position: relative;
-  width: 300px;
-  height: 150px;
+button{
+padding:12px 28px;
+font-size:18px;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin:10px;
 }
 
-button {
-  padding: 12px 28px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  position: absolute;
+#yes{background:#ff4d6d;color:white;}
+#no{background:#444;color:white;}
+
+/* Loading Screen */
+#loadingScreen{
+display:none;
+margin-top:150px;
 }
 
-#yes {
-  left: 40px;
-  background-color: #ff4d6d;
-  color: white;
+#bar{
+width:300px;
+height:25px;
+border:2px solid white;
+margin:auto;
 }
 
-#no {
-  right: 40px;
-  background-color: #444;
-  color: white;
+#progress{
+height:100%;
+width:0%;
+background:white;
 }
 
-#message {
-  margin-top: 20px;
-  font-size: 1.8rem;
-  color: white;
-  display: none;
+#meme{
+display:none;
+width:230px;
+margin-top:20px;
+border-radius:12px;
 }
 
-#meme {
-  display: none;
-  margin-top: 20px;
-  width: 230px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  animation: popIn 0.6s ease;
-}
-
-@keyframes popIn {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* Rick gif */
+#rick{
+position:fixed;
+bottom:10px;
+right:10px;
+width:120px;
+display:none;
 }
 
 /* Hearts */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  font-size: 24px;
-  animation: floatUp 6s linear infinite;
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:24px;
+animation:floatUp 6s linear infinite;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-110vh); opacity: 0; }
+@keyframes floatUp{
+0%{transform:translateY(0);}
+100%{transform:translateY(-110vh);opacity:0;}
 }
 
 /* Confetti */
-.confetti {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  top: -10px;
-  animation: fall 3s linear infinite;
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:-10px;
+animation:fall 3s linear infinite;
 }
 
-@keyframes fall {
-  to { transform: translateY(110vh) rotate(360deg); }
+@keyframes fall{
+to{transform:translateY(110vh) rotate(360deg);}
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="title">Hey Ken Doll ❤️</h1>
-<h2 id="question">Will you be my Valentine?</h2>
-
-<div class="buttons">
-  <button id="yes">Yes</button>
-  <button id="no">No</button>
+<!-- MAIN QUESTION -->
+<div id="main">
+<h1>Hey Ken Doll ❤️</h1>
+<h2>Will you be my Valentine?</h2>
+<button id="yes">Yes</button>
+<button id="no">No</button>
 </div>
 
-<div id="message">
-  I love you ❤️<br>
-  Happy Valentine’s Day Jaan tu!
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+<h2>🔍 Checking Compatibility</h2>
+<img src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" width="80"><br><br>
+
+<div id="bar">
+<div id="progress"></div>
 </div>
 
-<img id="meme" src="IMG_0456.png" alt="Success Kid">
+<h3 id="percent">0%</h3>
 
-<audio id="song" preload="auto" playsinline>
-  <source src="https://www.myinstants.com/media/sounds/rickroll.mp3" type="audio/mpeg">
+<h2 id="result" style="display:none;">
+Result: Permanently Stuck with Barbie 💘
+</h2>
+
+<div id="finalMessage" style="display:none;">
+<h2>I love you ❤️<br>Happy Valentine’s Day Jaan tu!</h2>
+<img id="IMG_0456.png" src="success.png">
+</div>
+</div>
+
+<!-- Rick Astley GIF -->
+<img id="rick" src="https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif">
+
+<audio id="song">
+<source src="https://www.myinstants.com/media/sounds/rickroll.mp3">
 </audio>
 
 <script>
 
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
-const message = document.getElementById("message");
-const meme = document.getElementById("meme");
-const song = document.getElementById("song");
-const title = document.getElementById("title");
-const question = document.getElementById("question");
+const yesBtn=document.getElementById("yes");
+const noBtn=document.getElementById("no");
 
-/* Floating NO button */
-const noMove = setInterval(() => {
-  const maxX = window.innerWidth - noBtn.offsetWidth;
-  const maxY = window.innerHeight - noBtn.offsetHeight;
+const main=document.getElementById("main");
+const loading=document.getElementById("loadingScreen");
 
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
-}, 900);
+const progress=document.getElementById("progress");
+const percent=document.getElementById("percent");
 
-/* YES CLICK */
-yesBtn.addEventListener("click", () => {
+const result=document.getElementById("result");
+const finalMessage=document.getElementById("finalMessage");
 
-  /* Remove question + buttons */
-  title.style.display = "none";
-  question.style.display = "none";
-  yesBtn.style.display = "none";
+const meme=document.getElementById("meme");
+const song=document.getElementById("song");
+const rick=document.getElementById("rick");
 
-  clearInterval(noMove);
-  noBtn.style.display = "none";
-
-  /* Show message + meme */
-  message.style.display = "block";
-  meme.style.display = "block";
-
-  launchHearts();
-  launchConfetti();
-  fadeInSong();
-});
-
-/* Smooth Fade Music */
-function fadeInSong() {
-  song.volume = 0;
-
-  song.play().then(() => {
-    let volume = 0;
-
-    const fade = setInterval(() => {
-      if (volume < 1) {
-        volume += 0.05;
-        song.volume = volume;
-      } else {
-        clearInterval(fade);
-      }
-    }, 200);
-  });
+/* NO BUTTON BETRAYAL */
+noBtn.onclick=()=>{
+alert("Error 404: Wrong Choice Detected 😆");
+startLoading();
 }
 
-/* Hearts */
-function launchHearts() {
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
+/* YES BUTTON */
+yesBtn.onclick=startLoading;
 
-    setTimeout(() => heart.remove(), 7000);
-  }, 300);
+/* LOADING LOGIC */
+function startLoading(){
+
+main.style.display="none";
+loading.style.display="block";
+
+let count=0;
+
+const load=setInterval(()=>{
+count++;
+progress.style.width=count+"%";
+percent.innerText=count+"%";
+
+if(count>=100){
+clearInterval(load);
+
+result.style.display="block";
+finalMessage.style.display="block";
+meme.style.display="block";
+
+launchHearts();
+launchConfetti();
+fadeMusic();
+
+rick.style.display="block";
+
 }
 
-/* Confetti */
-function launchConfetti() {
-  for (let i = 0; i < 80; i++) {
-    const confetti = document.createElement("div");
-    confetti.className = "confetti";
-    confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.backgroundColor =
-      `hsl(${Math.random()*360},100%,70%)`;
+},40);
 
-    document.body.appendChild(confetti);
-    setTimeout(() => confetti.remove(), 4000);
-  }
+}
+
+/* MUSIC FADE */
+function fadeMusic(){
+song.volume=0;
+song.play();
+
+let vol=0;
+
+const fade=setInterval(()=>{
+if(vol<1){
+vol+=0.05;
+song.volume=vol;
+}else{
+clearInterval(fade);
+}
+},200);
+}
+
+/* HEARTS */
+function launchHearts(){
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),7000);
+},300);
+}
+
+/* CONFETTI */
+function launchConfetti(){
+for(let i=0;i<80;i++){
+const confetti=document.createElement("div");
+confetti.className="confetti";
+confetti.style.left=Math.random()*100+"vw";
+confetti.style.backgroundColor=`hsl(${Math.random()*360},100%,70%)`;
+document.body.appendChild(confetti);
+
+setTimeout(()=>confetti.remove(),4000);
+}
 }
 
 </script>
